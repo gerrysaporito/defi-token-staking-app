@@ -32,7 +32,7 @@ contract RWD {
   constructor() {
     name = 'Reward Token';
     symbol = 'RWD';
-    totalSupply = 1000000000000000000000000;
+    totalSupply = 1000000000000000000000000; // 1 Million Tokens
     decimals = 18;
     balanceOf[msg.sender] = totalSupply;
   }
