@@ -41,15 +41,29 @@ contract DecentralBank {
     hasStaked[msg.sender] = true;
   }
 
-    function issueTokens() public {
-      // Require the owner to issue tokens only
-      require(msg.sender == owner, 'caller must be the owner');
+  function issueTokens() public {
+    // Require the owner to issue tokens only
+    require(msg.sender == owner, 'caller must be the owner');
 
-      for (uint i = 0; i < stakers.length; ++i) {
-        address recipient = stakers[i];
-        uint balance = stakingBalance[recipient] / 9; // Create percentage incentive for stakers
-        if (balance > 0) rwd.transfer(recipient, balance);
-
-      }
+    for (uint i = 0; i < stakers.length; ++i) {
+      address recipient = stakers[i];
+      uint balance = stakingBalance[recipient] / 9; // Create percentage incentive for stakers
+      if (balance > 0) rwd.transfer(recipient, balance);
     }
+  }
+
+  function unstakeTokens() public {
+    uint balance = stakingBalance[msg.sender];
+
+    require(balance > 0, 'staking balance >= 0');
+
+    // Transfer the tokens to the specified contract address from our bank
+    tether.transfer(msg.sender, balance);
+
+    // Reset staking balance
+    stakingBalance[msg.sender] = 0;
+
+    // Update staking balance
+    isStaking[msg.sender] = false;
+   }
 }
