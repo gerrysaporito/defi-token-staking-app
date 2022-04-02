@@ -75,13 +75,13 @@ contract Tether {
    */
   function transferFrom (address _from, address _to, uint256 _value) public returns (bool success) {
     // Check if sender has enough funds to transfer amount
-    require(balanceOf[msg.sender] >= _value);
-    require(allowance[msg.sender][_from] >= _value);
+    require(balanceOf[_from] >= _value, 'reverting: balance check failed');
+    require(allowance[_from][msg.sender] >= _value, 'reverting: allowance check fialed');
 
     // Transaction between wallets
-    balanceOf[_from] -= _value;
     balanceOf[_to] += _value;
-    allowance[msg.sender][_from] -= _value;
+    balanceOf[_from] -= _value;
+    allowance[_from][msg.sender] -= _value;
 
     emit Transfer(_from, _to, _value);
     return true;
