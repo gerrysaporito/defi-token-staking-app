@@ -3,13 +3,11 @@ import tetherImg from '../tether.png';
 
 export const Staking = (props) => {
   const {
-    // account,
-    // tether,
-    // rwd,
-    // decentralBank,
     tetherBalance,
     rwdBalance,
     stakingBalance,
+    stakeTokens,
+    unstakeTokens,
   } = props;
 
   return (

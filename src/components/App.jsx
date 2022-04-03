@@ -98,6 +98,34 @@ const App = () => {
     }
   };
 
+  const stakeTokens = (amount) => {
+    setLoading(false);
+    // Approve the transaction
+    state.tether.methods
+      .approve(state.decentralBank._address, amount)
+      .send({ from: state.account })
+      .on('transactionHash', () => {
+        // Perform the transaction
+        state.decentralBank.methods
+          .depositTokens(amount)
+          .send({ from: state.account })
+          .on('transactionHash', () => {
+            setLoading(false);
+          });
+      });
+  };
+
+  const unstakeTokens = () => {
+    setLoading(false);
+    // Perform the transaction
+    state.decentralBank.methods
+      .depositTokens(amount)
+      .send({ from: state.account })
+      .on('transactionHash', () => {
+        setLoading(false);
+      });
+  };
+
   return (
     <div>
       <Navbar
@@ -111,7 +139,11 @@ const App = () => {
           Connect Wallet...
         </p>
       ) : (
-        <Main {...state} />
+        <Main
+          {...state}
+          stakeTokens={stakeTokens}
+          unstakeTokens={unstakeTokens}
+        />
       )}
     </div>
   );
