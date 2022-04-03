@@ -35,6 +35,7 @@ const App = () => {
     // Load tether contract
     const networkId = await new web3.eth.net.getId();
     const tetherData = Tether.networks[networkId];
+
     if (tetherData) {
       const tether = await new web3.eth.Contract(
         Tether.abi,
@@ -96,7 +97,7 @@ const App = () => {
       console.error(e);
     }
   };
-  console.log(state);
+
   return (
     <div>
       <Navbar
@@ -105,7 +106,13 @@ const App = () => {
         loading={loading}
         setLoading={setLoading}
       />
-      <Main />
+      {loading ? (
+        <p id="loader" className="text-center" style={{ margin: '30px' }}>
+          Connect Wallet...
+        </p>
+      ) : (
+        <Main {...state} />
+      )}
     </div>
   );
 };
