@@ -1,4 +1,5 @@
 import React from 'react';
+import tether from '../tether.png';
 
 export const Staking = () => {
   return (
@@ -27,6 +28,25 @@ export const Staking = () => {
             <span className="float-right" style={{ marginRight: '8px' }}>
               Balance:
             </span>
+            <div className="input-group mb-4">
+              <input type="text" placeholder="0" required />
+              <div className="input-group-open">
+                <div className="input-group-text">
+                  <img src={tether} alt="tether" height="32" />
+                  &nbsp;&nbsp;&nbsp;USDT
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-lg btn-block">
+              DEPOSIT
+            </button>
+            <button type="submit" className="btn btn-primary btn-lg btn-block">
+              WITHDRAW
+            </button>
+            <div className="card-body text-center" style={{ color: 'blue' }}>
+              Airdrop
+            </div>
           </div>
         </form>
       </div>
