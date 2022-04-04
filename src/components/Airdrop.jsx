@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-export const Airdrop = ({ seconds }) => {
+export const Airdrop = ({ seconds, stakingBalance, airdropTokens }) => {
   const [state, setState] = useState({
     time: {},
     seconds: 1,
@@ -14,10 +14,15 @@ export const Airdrop = ({ seconds }) => {
       seconds: seconds,
     });
 
+    airdropReleaseTokens();
+  }, []);
+
+  const startTimer = () => {
     const timer = setInterval(async () => {
       await setState((prev) => {
         if (prev.seconds === 0) {
           clearInterval(timer);
+          airdropTokens();
           return {
             seconds: prev.seconds,
             time: secondsToTime(prev.seconds),
@@ -30,7 +35,13 @@ export const Airdrop = ({ seconds }) => {
         };
       });
     }, 1000);
-  }, []);
+  };
+
+  const airdropReleaseTokens = () => {
+    if (stakingBalance >= parseInt(window.web3.utils.toWei('50', 'ether'))) {
+      startTimer();
+    }
+  };
 
   return (
     <div style={{ color: 'black' }}>

@@ -4,12 +4,14 @@ import { Airdrop } from './Airdrop';
 
 export const Staking = (props) => {
   const {
+    decentralBank,
     tetherBalance,
     rwdBalance,
     stakingBalance,
     stakeTokens,
     unstakeTokens,
     setUpdated,
+    airdropTokens,
   } = props;
 
   const [amount, setAmount] = React.useState(0);
@@ -86,7 +88,12 @@ export const Staking = (props) => {
               WITHDRAW
             </button>
             <div className="card-body text-center" style={{ color: 'blue' }}>
-              Airdrop: <Airdrop seconds={3} />
+              Airdrop:{' '}
+              <Airdrop
+                seconds={3}
+                stakingBalance={stakingBalance}
+                airdropTokens={airdropTokens}
+              />
             </div>
           </div>
         </form>

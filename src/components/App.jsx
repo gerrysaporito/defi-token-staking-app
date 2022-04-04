@@ -128,6 +128,22 @@ const App = () => {
       });
   };
 
+  const releaseTokens = async () => {
+    setLoading(false);
+    console.log('decentralBank', state.decentralBank);
+    try {
+      const owner = await state.decentralBank.methods.owner().call();
+      console.log('owner', owner);
+      // Perform the transaction
+      state.decentralBank.methods
+        .issueTokens()
+        .send({ from: owner })
+        .on('transactionHash', () => {
+          setLoading(false);
+        });
+    } catch (e) {}
+  };
+
   React.useEffect(() => {
     loadData();
   }, [updated]);
@@ -153,6 +169,7 @@ const App = () => {
           setUpdated={setUpdated}
           stakeTokens={stakeTokens}
           unstakeTokens={unstakeTokens}
+          airdropTokens={airdropTokens}
         />
       )}
     </div>
