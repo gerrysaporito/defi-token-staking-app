@@ -1,5 +1,6 @@
 import React from 'react';
 import tetherImg from '../tether.png';
+import { Airdrop } from './Airdrop';
 
 export const Staking = (props) => {
   const {
@@ -85,7 +86,7 @@ export const Staking = (props) => {
               WITHDRAW
             </button>
             <div className="card-body text-center" style={{ color: 'blue' }}>
-              Airdrop
+              Airdrop: <Airdrop seconds={3} />
             </div>
           </div>
         </form>
