@@ -5,6 +5,7 @@ import Tether from '../truffle_abis/Tether.json';
 import RWD from '../truffle_abis/RWD.json';
 import DecentralBank from '../truffle_abis/DecentralBank.json';
 import { Main } from './Main';
+import { ParticlesSettings } from './ParticlesSettings';
 
 const App = () => {
   const [state, setState] = React.useState({
@@ -17,6 +18,7 @@ const App = () => {
     stakingBalance: '0',
   });
   const [loading, setLoading] = React.useState(true);
+  const [updated, setUpdated] = React.useState(true);
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -119,15 +121,22 @@ const App = () => {
     setLoading(false);
     // Perform the transaction
     state.decentralBank.methods
-      .depositTokens(amount)
+      .unstakeTokens()
       .send({ from: state.account })
       .on('transactionHash', () => {
         setLoading(false);
       });
   };
 
+  React.useEffect(() => {
+    loadData();
+  }, [updated]);
+
   return (
-    <div>
+    <div className="app" style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute' }}>
+        <ParticlesSettings />
+      </div>
       <Navbar
         account={state.account}
         onClick={loadData}
@@ -141,6 +150,7 @@ const App = () => {
       ) : (
         <Main
           {...state}
+          setUpdated={setUpdated}
           stakeTokens={stakeTokens}
           unstakeTokens={unstakeTokens}
         />

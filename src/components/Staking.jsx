@@ -8,19 +8,41 @@ export const Staking = (props) => {
     stakingBalance,
     stakeTokens,
     unstakeTokens,
+    setUpdated,
   } = props;
+
+  const [amount, setAmount] = React.useState(0);
+
+  const onChange = (e) => {
+    e.preventDefault();
+    setAmount(e.target.value);
+  };
+
+  const onStakeSubmit = async (e) => {
+    e.preventDefault();
+    const weiAmount = await window.web3.utils.toWei(amount.toString(), 'Ether');
+    await stakeTokens(weiAmount);
+    await setUpdated((prev) => !prev);
+  };
+
+  const onUnstakeSubmit = async (e) => {
+    e.preventDefault();
+    const weiAmount = await window.web3.utils.toWei(amount.toString(), 'Ether');
+    await unstakeTokens(weiAmount);
+    await setUpdated((prev) => !prev);
+  };
 
   return (
     <div id="content" className="mt-3">
       <table className="table text-muted text-center">
         <thead>
-          <tr style={{ color: 'black' }}>
+          <tr style={{ color: 'white' }}>
             <th scope="col">Staking Balance</th>
             <th scope="col">Reward Balance</th>
           </tr>
         </thead>
         <tbody>
-          <tr style={{ color: 'black' }}>
+          <tr style={{ color: 'white' }}>
             <td>{window.web3.utils.fromWei(stakingBalance, 'Ether')}USDT</td>
             <td>{window.web3.utils.fromWei(rwdBalance, 'Ether')}RWD</td>
           </tr>
@@ -28,7 +50,7 @@ export const Staking = (props) => {
       </table>
 
       <div className="card mb-2" style={{ opacity: '0.9' }}>
-        <form className="mb-3">
+        <form className="mb-3" onSubmit={onStakeSubmit}>
           <div style={{ borderSpacing: '0 1rem' }}>
             <label className="float-left" style={{ marginLeft: '15px' }}>
               <b>Stake Tokens</b>
@@ -37,7 +59,13 @@ export const Staking = (props) => {
               Balance: {window.web3.utils.fromWei(tetherBalance, 'Ether')}
             </span>
             <div className="input-group mb-4">
-              <input type="text" placeholder="0" required />
+              <input
+                type="text"
+                placeholder="0"
+                value={amount}
+                onChange={onChange}
+                required
+              />
               <div className="input-group-open">
                 <div className="input-group-text">
                   <img src={tetherImg} alt="tether" height="32" />
@@ -49,7 +77,11 @@ export const Staking = (props) => {
             <button type="submit" className="btn btn-primary btn-lg btn-block">
               DEPOSIT
             </button>
-            <button type="submit" className="btn btn-primary btn-lg btn-block">
+            <button
+              type="submit"
+              onClick={onUnstakeSubmit}
+              className="btn btn-primary btn-lg btn-block"
+            >
               WITHDRAW
             </button>
             <div className="card-body text-center" style={{ color: 'blue' }}>
